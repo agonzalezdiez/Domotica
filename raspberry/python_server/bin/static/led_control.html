@@ -1,0 +1,37 @@
+<html>
+    <head>
+    <!--<link type="text/css" href="/css/base.css" rel="stylesheet" />-->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript">
+        function LightLed(){
+            window.location = "http://192.168.1.133:8080/light";
+        }
+    </script>
+    </head>
+    <body>
+        Hello world
+        <input type="button" onclick="LightLed()"/>
+        <span id="controlBtn" state="off">&#9728;&nbsp;</span>
+        <script type="text/javascript">
+            $("#controlBtn").on("click",function(d){
+                console.log(this);
+                console.log(d);
+                if(this.getAttribute("state")=="off"){
+                    this.setAttribute("state","on");
+                    while( this.firstChild ) {
+                        this.removeChild( this.firstChild );
+                    }
+                    this.appendChild( document.createTextNode("some new content") );
+                    console.log("enciendo");
+                    $.getJSON("http://192.168.1.133:8080/light",function(d){console.log(d);});
+                }
+                else{
+                    this.setAttribute("state","off");
+                    console.log("apago");
+                    $.getJSON("http://192.168.1.133:8080/off",function(d){console.log(d);});
+                }
+            })
+            .css("cursor","pointer");
+        </script>
+    </body>
+</html>
